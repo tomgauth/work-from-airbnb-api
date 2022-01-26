@@ -1,5 +1,6 @@
 from flask import Flask
 from services.airbnb_img_scraper import ImagesScraper
+from services.gvision import ImageVision
 app = Flask(__name__)
 
 test_url = "https://www.airbnb.fr/rooms/31348954?check_in=2022-02-11&check_out=2022-02-12&previous_page_section_name=1000&federated_search_id=3c0640f4-2d24-482b-9763-d105595834b4&guests=1&adults=1"
@@ -19,13 +20,16 @@ def get_airbnb_analysis(airbnb_url):
 	Returns the parsed data as a JSON file '''	
 
 	# beautiful soup opens the url + /photos
-	scraper = ImagesScraper(airbnb_url)
-	images_urls = scraper.scrape_images()
 	# get the url of each photo
+	scraper = ImagesScraper(airbnb_url)
+	images_urls = scraper.scrape_images()	
 
 	# send the photos to google vision
+	img_analyser = ImageVision(images_urls)
+	found_items = img_analyser.analyse_images()
+	
 
-	return " ".join([url for url in images_urls])
+	return " ".join([item for item in found_items])
 	pass
 
 
