@@ -1,10 +1,10 @@
 from google.cloud import vision
-
+from settings import *
 
 class ImageVision:
     """ Class that analyses images and returns items found
     present in the items_to_find"""
-    def __init__(self, images_urls, items_to_find=['Table', 'Desk']):
+    def __init__(self, images_urls, items_to_find=['Table', 'Desk', 'Office chair']):
         self.images_urls = images_urls
         self.items_to_find = items_to_find
 
@@ -22,6 +22,7 @@ class ImageVision:
 
             for label in response.label_annotations:
                 item = label.description
+                print(item)
                 if item not in found_items and item in self.items_to_find:
                     found_items.append(item)
 
